@@ -98,7 +98,7 @@ func (i *Ippanel) createNewPhonebook(title string) (id string, err error) {
 func (i *Ippanel) listPhonebooks() ([]responces.Phonebook, error) {
 	resp, err := i.get("/phonebooks/list-new", nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to list phonebooks: %w", err)
+		return nil, fmt.Errorf("failed to get list phonebooks: %w", err)
 	}
 
 	if !resp.Meta.Status {
