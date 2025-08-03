@@ -1,7 +1,8 @@
 package smskit
 
 type SMSKit[T any] interface {
-	StorePhonenumber(number, pre, name, title string) (T, error)
+	StorePhonenumber(phonenumber, pre, fullname, phonebookID string) (T, error)
 	CreatePhonebook(title string, options []string) (T, error)
+	FetchPhonebooks() (T, error)
 	CheckToken() (T, error)
 }
