@@ -14,7 +14,8 @@ type AddPhonebookRequest struct {
 	List []PhonebookContact `json:"list"`
 }
 
-type CreatePhonebookRequest struct {
+type PhonebookRequest struct {
+	ID      int      `json:"id"`
 	Title   string   `json:"title"`
-	Options []string `json:"options"`
+	Options []string `json:"options,omitempty"`
 }

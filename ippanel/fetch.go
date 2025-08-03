@@ -13,23 +13,22 @@ import (
 	"github.com/eqba1/go-smskit/ippanel/responces"
 )
 
-// get do get request
-func (sms Ippanel) get(uri string, params map[string]string) (*responces.BaseResponse, error) {
-	return sms.request("GET", uri, params, nil)
+// get request
+func (i Ippanel) get(uri string, params map[string]string) (*responces.BaseResponse, error) {
+	return i.request("GET", uri, params, nil)
 }
 
-// post do post request
-func (sms Ippanel) post(uri string, data interface{}) (*responces.BaseResponse, error) {
-	return sms.request("POST", uri, nil, data)
+// post request
+func (i Ippanel) post(uri string, data interface{}) (*responces.BaseResponse, error) {
+	return i.request("POST", uri, nil, data)
 }
 
 func (i Ippanel) request(method string, uri string, params map[string]string, data interface{}) (*responces.BaseResponse, error) {
-	u := i.BaseURL
+	// Create a proper copy of the URL to avoid modifying the original
+	u := *i.BaseURL
 
-	// join base url with extra path
 	u.Path = path.Join(i.BaseURL.Path, uri)
 
-	// set query params
 	p := url.Values{}
 	for key, param := range params {
 		p.Add(key, param)
@@ -70,7 +69,6 @@ func (i Ippanel) request(method string, uri string, params map[string]string, da
 		if err := json.Unmarshal(responseBody, _res); err != nil {
 			return nil, fmt.Errorf("could not decode response JSON, %s: %v", string(responseBody), err)
 		}
-
 		return _res, nil
 	case http.StatusNoContent:
 		// Status code 204 is returned for successful DELETE requests. Don't try to
@@ -79,13 +77,13 @@ func (i Ippanel) request(method string, uri string, params map[string]string, da
 	case http.StatusInternalServerError:
 		// Status code 500 is a server error and means nothing can be done at this
 		// point.
-		return nil, ErrUnexpectedResponse
+		return nil, responces.ErrUnexpectedResponse
 	default:
 		_res := &responces.BaseResponse{}
 		if err := json.Unmarshal(responseBody, _res); err != nil {
 			return nil, fmt.Errorf("could not decode response JSON, %s: %v", string(responseBody), err)
 		}
 
-		return _res, fmt.Errorf(_res.Meta.Message)
+		return _res, fmt.Errorf("(%v)-%v", _res.Meta.MessageCode, _res.Meta.Message)
 	}
 }

@@ -1,6 +1,8 @@
-package ippanel
+package responces
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var (
 	ErrPhonebookNotFound  = fmt.Errorf("phonebook not found")
