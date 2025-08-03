@@ -49,7 +49,7 @@ func (i Ippanel) request(method string, uri string, params map[string]string, da
 
 	//req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "AccessKey "+i.APIKey)
+	req.Header.Set("Authorization", i.APIKey)
 	req.Header.Set("User-Agent", "Ippanel/ApiClient/"+ClientVersion+" Go/"+runtime.Version())
 
 	res, err := i.HTTPClient.Do(req)
